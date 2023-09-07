@@ -1,20 +1,25 @@
 package com.github.lzaytseva.moviesimdbapi.data.repository
 
+import com.github.lzaytseva.moviesimdbapi.data.dto.MovieCastRequest
+import com.github.lzaytseva.moviesimdbapi.data.dto.MovieCastResponse
 import com.github.lzaytseva.moviesimdbapi.data.dto.MovieDetailsRequest
 import com.github.lzaytseva.moviesimdbapi.data.dto.MovieDetailsResponse
 import com.github.lzaytseva.moviesimdbapi.data.dto.MoviesSearchRequest
 import com.github.lzaytseva.moviesimdbapi.data.dto.MoviesSearchResponse
+import com.github.lzaytseva.moviesimdbapi.data.mapper.MovieCastMapper
 import com.github.lzaytseva.moviesimdbapi.data.network.NetworkClient
+import com.github.lzaytseva.moviesimdbapi.data.storage.Storage
 import com.github.lzaytseva.moviesimdbapi.domain.api.MoviesRepository
 import com.github.lzaytseva.moviesimdbapi.domain.model.Movie
+import com.github.lzaytseva.moviesimdbapi.domain.model.MovieCast
 import com.github.lzaytseva.moviesimdbapi.domain.model.MovieDetails
 import com.github.lzaytseva.moviesimdbapi.util.Resource
-import com.github.lzaytseva.moviesimdbapi.data.storage.Storage
 
 
 class MoviesRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val localStorage: Storage
+    private val localStorage: Storage,
+    private val castMapper: MovieCastMapper
 ) : MoviesRepository {
 
     override fun searchMovies(expression: String): Resource<List<Movie>> {
@@ -60,6 +65,26 @@ class MoviesRepositoryImpl(
                         )
                     )
                 }
+            }
+
+            else -> {
+                Resource.Error("Ошибка сервера")
+
+            }
+        }
+    }
+
+    override fun getMovieCast(movieId: String): Resource<MovieCast> {
+        val response = networkClient.doRequest(MovieCastRequest(movieId))
+        return when (response.resultCode) {
+            -1 -> {
+                Resource.Error("Проверьте подключение к интернету")
+            }
+
+            200 -> {
+                Resource.Success(
+                    data = castMapper.mapDtoToDomain(response as MovieCastResponse)
+                )
             }
 
             else -> {

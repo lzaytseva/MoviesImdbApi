@@ -9,7 +9,8 @@ val repositoryModule = module {
     single<MoviesRepository> {
         MoviesRepositoryImpl(
             networkClient = get(),
-            localStorage = get()
+            localStorage = get(),
+            castMapper = get()
         )
     }
 }

@@ -1,6 +1,7 @@
 package com.github.lzaytseva.moviesimdbapi.di
 
 import android.content.Context
+import com.github.lzaytseva.moviesimdbapi.data.mapper.MovieCastMapper
 import com.github.lzaytseva.moviesimdbapi.data.network.IMDbApiService
 import com.github.lzaytseva.moviesimdbapi.data.network.NetworkClient
 import com.github.lzaytseva.moviesimdbapi.data.network.RetrofitNetworkClient
@@ -36,6 +37,10 @@ val dataModule = module {
     single {
         androidContext()
             .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
+    }
+
+    single {
+        MovieCastMapper()
     }
 
 }

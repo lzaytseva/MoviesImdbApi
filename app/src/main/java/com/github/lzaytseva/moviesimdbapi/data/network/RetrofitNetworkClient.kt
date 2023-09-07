@@ -3,6 +3,7 @@ package com.github.lzaytseva.moviesimdbapi.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.github.lzaytseva.moviesimdbapi.data.dto.MovieCastRequest
 import com.github.lzaytseva.moviesimdbapi.data.dto.MovieDetailsRequest
 import com.github.lzaytseva.moviesimdbapi.data.dto.MoviesSearchRequest
 import com.github.lzaytseva.moviesimdbapi.data.dto.Response
@@ -14,20 +15,23 @@ class RetrofitNetworkClient
 ) : NetworkClient {
 
     override fun doRequest(dto: Any): Response {
-        if (isConnected() == false) {
+        if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        if ((dto !is MoviesSearchRequest) && (dto !is MovieDetailsRequest)) {
+
+        if ((dto !is MoviesSearchRequest) && (dto !is MovieDetailsRequest) && (dto !is MovieCastRequest)) {
             return Response().apply { resultCode = 400 }
         }
 
-        val response = if (dto is MoviesSearchRequest) {
-            imdbService.searchMovies(dto.expression).execute()
-        } else {
-            imdbService.getMovieDetails((dto as MovieDetailsRequest).id).execute()
+        val response = when (dto) {
+            is MoviesSearchRequest -> imdbService.searchMovies(dto.expression).execute()
+            is MovieDetailsRequest -> imdbService.getMovieDetails(dto.movieId).execute()
+            else -> imdbService.getMovieCast((dto as MovieCastRequest).movieId).execute()
         }
         val body = response.body()
-        return body?.apply { resultCode = response.code() } ?: Response().apply { resultCode = response.code() }
+        return body?.apply { resultCode = response.code() } ?: Response().apply {
+            resultCode = response.code()
+        }
     }
 
     private fun isConnected(): Boolean {
