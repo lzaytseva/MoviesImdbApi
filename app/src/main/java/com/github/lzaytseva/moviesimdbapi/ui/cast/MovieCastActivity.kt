@@ -21,7 +21,7 @@ class MovieCastActivity : AppCompatActivity() {
         ActivityMovieCastBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: MovieCastViewModel by viewModel() {
+    private val viewModel: MovieCastViewModel by viewModel {
         parametersOf(intent.getStringExtra(MOVIE_ID_KEY))
     }
 
