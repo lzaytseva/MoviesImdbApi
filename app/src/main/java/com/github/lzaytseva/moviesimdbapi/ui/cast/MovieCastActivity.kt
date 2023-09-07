@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.lzaytseva.moviesimdbapi.databinding.ActivityMovieCastBinding
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class MovieCastActivity : AppCompatActivity() {
-    private val adapter = MoviesCastAdapter()
+    private val adapter = ListDelegationAdapter(
+        movieCastHeaderDelegate(),
+        movieCastPersonDelegate(),
+    )
 
     private val binding by lazy {
         ActivityMovieCastBinding.inflate(layoutInflater)

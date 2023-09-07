@@ -50,6 +50,8 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.15.1")
 
+    implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.3.2")
+    implementation("com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.2")
 
     implementation("io.insert-koin:koin-android:3.4.0")
 
