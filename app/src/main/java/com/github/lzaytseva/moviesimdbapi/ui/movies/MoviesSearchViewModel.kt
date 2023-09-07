@@ -124,21 +124,16 @@ class MoviesSearchViewModel(
             moviesInteractor.addMovieToFavorites(movie)
         }
 
-        // 1
         updateMovieContent(movie.id, movie.copy(inFavourite = !movie.inFavourite))
     }
 
     private fun updateMovieContent(movieId: String, newMovie: Movie) {
         val currentState = stateLiveData.value
 
-        // 2
         if (currentState is MoviesState.Content) {
-            // 3
             val movieIndex = currentState.movies.indexOfFirst { it.id == movieId }
 
-            // 4
             if (movieIndex != -1) {
-                // 5
                 stateLiveData.value = MoviesState.Content(
                     currentState.movies.toMutableList().also {
                         it[movieIndex] = newMovie
