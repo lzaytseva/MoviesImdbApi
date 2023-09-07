@@ -8,8 +8,8 @@ import com.github.lzaytseva.moviesimdbapi.domain.model.MovieDetails
 
 
 class AboutViewModel(
-    private val movieId: String,
-    private val moviesInteractor: MoviesInteractor,
+    movieId: String,
+    moviesInteractor: MoviesInteractor,
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<AboutState>()
