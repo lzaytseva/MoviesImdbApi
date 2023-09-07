@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import com.github.lzaytseva.moviesimdbapi.R
 import com.github.lzaytseva.moviesimdbapi.databinding.FragmentAboutBinding
 import com.github.lzaytseva.moviesimdbapi.domain.model.MovieDetails
-import com.github.lzaytseva.moviesimdbapi.ui.cast.MovieCastActivity
+import com.github.lzaytseva.moviesimdbapi.ui.cast.MovieCastFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -45,8 +47,14 @@ class AboutFragment : Fragment() {
         }
 
         binding.btnShowCast.setOnClickListener {
-            MovieCastActivity.newInstance(requireContext(), movieId ?: "").apply {
-                startActivity(this)
+            parentFragment?.parentFragmentManager?.commit {
+                replace(
+                    R.id.main_fragment_container,
+                    MovieCastFragment.newInstance(movieId ?: ""),
+                    MovieCastFragment.TAG
+                )
+                setReorderingAllowed(true)
+                addToBackStack(MovieCastFragment.TAG)
             }
         }
     }

@@ -5,25 +5,40 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.lzaytseva.moviesimdbapi.databinding.ActivityMoviesBinding
+import com.github.lzaytseva.moviesimdbapi.R
+import com.github.lzaytseva.moviesimdbapi.databinding.FragmentMoviesSearchBinding
 import com.github.lzaytseva.moviesimdbapi.domain.model.Movie
-import com.github.lzaytseva.moviesimdbapi.ui.details.DetailsActivity
+import com.github.lzaytseva.moviesimdbapi.ui.details.MovieDetailsFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MoviesActivity : ComponentActivity() {
+class MoviesSearchFragment : Fragment() {
 
+    private var _binding: FragmentMoviesSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val adapter by lazy {
         MoviesAdapter(object : MoviesAdapter.MovieClickListener {
             override fun onMovieClick(movie: Movie) {
                 if (clickDebounce()) {
-                    startActivity(
-                        DetailsActivity.newIntent(this@MoviesActivity, movie.id, movie.image)
-                    )
+                    parentFragmentManager.commit {
+                        replace(
+                            R.id.main_fragment_container,
+                            MovieDetailsFragment.newInstance(
+                                movieId = movie.id,
+                                posterUrl = movie.image
+                            ),
+                            MovieDetailsFragment.TAG
+                        )
+                        setReorderingAllowed(true)
+
+                    }
 
                 }
             }
@@ -33,10 +48,6 @@ class MoviesActivity : ComponentActivity() {
             }
         }
         )
-    }
-
-    private val binding by lazy {
-        ActivityMoviesBinding.inflate(layoutInflater)
     }
 
     private lateinit var textWatcher: TextWatcher
@@ -49,10 +60,22 @@ class MoviesActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMoviesSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.rvMovies.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvMovies.adapter = adapter
 
         textWatcher = object : TextWatcher {
@@ -70,22 +93,23 @@ class MoviesActivity : ComponentActivity() {
         }
         textWatcher.let { binding.queryInput.addTextChangedListener(it) }
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
-        viewModel.observeShowToast().observe(this) {
+        viewModel.observeShowToast().observe(viewLifecycleOwner) {
             showToast(it)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher.let { binding.queryInput.removeTextChangedListener(it) }
+        _binding = null
     }
 
     private fun showToast(additionalMessage: String) {
-        Toast.makeText(this, additionalMessage, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), additionalMessage, Toast.LENGTH_LONG).show()
     }
 
     private fun render(state: MoviesState) {
@@ -136,6 +160,6 @@ class MoviesActivity : ComponentActivity() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        fun newInstance() = MoviesSearchFragment()
     }
-
 }
