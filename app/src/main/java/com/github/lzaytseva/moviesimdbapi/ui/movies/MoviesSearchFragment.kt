@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.lzaytseva.moviesimdbapi.R
 import com.github.lzaytseva.moviesimdbapi.databinding.FragmentMoviesSearchBinding
 import com.github.lzaytseva.moviesimdbapi.domain.model.Movie
+import com.github.lzaytseva.moviesimdbapi.navigation.api.Router
 import com.github.lzaytseva.moviesimdbapi.ui.details.MovieDetailsFragment
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MoviesSearchFragment : Fragment() {
@@ -23,22 +25,18 @@ class MoviesSearchFragment : Fragment() {
     private var _binding: FragmentMoviesSearchBinding? = null
     private val binding get() = _binding!!
 
+    private val router: Router by inject()
+
     private val adapter by lazy {
         MoviesAdapter(object : MoviesAdapter.MovieClickListener {
             override fun onMovieClick(movie: Movie) {
                 if (clickDebounce()) {
-                    parentFragmentManager.commit {
-                        replace(
-                            R.id.main_fragment_container,
-                            MovieDetailsFragment.newInstance(
-                                movieId = movie.id,
-                                posterUrl = movie.image
-                            ),
-                            MovieDetailsFragment.TAG
+                    router.openFragment(
+                        MovieDetailsFragment.newInstance(
+                            movieId = movie.id,
+                            posterUrl = movie.image
                         )
-                        setReorderingAllowed(true)
-
-                    }
+                    )
 
                 }
             }

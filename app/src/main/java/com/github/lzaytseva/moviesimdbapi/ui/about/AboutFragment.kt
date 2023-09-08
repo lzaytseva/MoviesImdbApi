@@ -10,11 +10,14 @@ import androidx.fragment.app.commit
 import com.github.lzaytseva.moviesimdbapi.R
 import com.github.lzaytseva.moviesimdbapi.databinding.FragmentAboutBinding
 import com.github.lzaytseva.moviesimdbapi.domain.model.MovieDetails
+import com.github.lzaytseva.moviesimdbapi.navigation.api.Router
 import com.github.lzaytseva.moviesimdbapi.ui.cast.MovieCastFragment
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class AboutFragment : Fragment() {
+    private val router : Router by inject()
 
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
@@ -47,15 +50,11 @@ class AboutFragment : Fragment() {
         }
 
         binding.btnShowCast.setOnClickListener {
-            parentFragment?.parentFragmentManager?.commit {
-                replace(
-                    R.id.main_fragment_container,
-                    MovieCastFragment.newInstance(movieId ?: ""),
-                    MovieCastFragment.TAG
+            router.openFragment(
+                MovieCastFragment.newInstance(
+                    movieId = requireArguments().getString(KEY_ID).orEmpty()
                 )
-                setReorderingAllowed(true)
-                addToBackStack(MovieCastFragment.TAG)
-            }
+            )
         }
     }
 
