@@ -22,8 +22,8 @@ class MovieDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireArguments().let {
-            movieId = it.getString(KEY_ID) ?: ""
-            posterUrl = it.getString(KEY_POSTER) ?: ""
+            movieId = it.getString(ARGS_ID).orEmpty()
+            posterUrl = it.getString(ARGS_POSTER).orEmpty()
         }
     }
 
@@ -58,15 +58,14 @@ class MovieDetailsFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_ID = "key_id"
-        private const val KEY_POSTER = "key_poster"
-        const val TAG = "DetailsFragment"
-        fun newInstance(movieId: String, posterUrl: String) =
-            MovieDetailsFragment().apply {
-                arguments = bundleOf(
-                    KEY_ID to movieId,
-                    KEY_POSTER to posterUrl
-                )
-            }
+        private const val ARGS_ID = "id"
+        private const val ARGS_POSTER = "poster"
+
+        fun createArgs(movieId: String, posterUrl: String): Bundle {
+            return bundleOf(
+                ARGS_ID to movieId,
+                ARGS_POSTER to posterUrl
+            )
+        }
     }
 }

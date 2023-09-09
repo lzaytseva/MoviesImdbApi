@@ -6,24 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.github.lzaytseva.moviesimdbapi.R
 import com.github.lzaytseva.moviesimdbapi.databinding.FragmentAboutBinding
 import com.github.lzaytseva.moviesimdbapi.domain.model.MovieDetails
-import com.github.lzaytseva.moviesimdbapi.navigation.api.Router
 import com.github.lzaytseva.moviesimdbapi.ui.cast.MovieCastFragment
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class AboutFragment : Fragment() {
-    private val router : Router by inject()
+
 
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
 
     private val movieId by lazy {
-        requireArguments().getString(KEY_ID)
+        requireArguments().getString(KEY_ID).orEmpty()
     }
 
     private val aboutViewModel: AboutViewModel by viewModel {
@@ -50,10 +48,9 @@ class AboutFragment : Fragment() {
         }
 
         binding.btnShowCast.setOnClickListener {
-            router.openFragment(
-                MovieCastFragment.newInstance(
-                    movieId = requireArguments().getString(KEY_ID).orEmpty()
-                )
+            findNavController().navigate(
+                R.id.action_movieDetailsFragment_to_movieCastFragment,
+                MovieCastFragment.createArgs(movieId = movieId)
             )
         }
     }

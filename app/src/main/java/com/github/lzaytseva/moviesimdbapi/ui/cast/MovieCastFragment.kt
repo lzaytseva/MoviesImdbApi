@@ -24,7 +24,7 @@ class MovieCastFragment : Fragment() {
     )
 
     private val viewModel: MovieCastViewModel by viewModel {
-        parametersOf(requireArguments().getString(KEY_ID) ?: "" )
+        parametersOf(requireArguments().getString(ARGS_ID).orEmpty())
     }
 
     override fun onCreateView(
@@ -83,12 +83,10 @@ class MovieCastFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_ID = "key_id"
-        const val TAG = "CastFragment"
+        private const val ARGS_ID = "id"
 
-        fun newInstance(movieId: String) =
-            MovieCastFragment().apply {
-                arguments = bundleOf(KEY_ID to movieId)
-            }
+        fun createArgs(movieId: String): Bundle {
+            return bundleOf(ARGS_ID to movieId)
+        }
     }
 }

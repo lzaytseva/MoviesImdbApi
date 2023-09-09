@@ -10,14 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.lzaytseva.moviesimdbapi.R
 import com.github.lzaytseva.moviesimdbapi.databinding.FragmentMoviesSearchBinding
 import com.github.lzaytseva.moviesimdbapi.domain.model.Movie
-import com.github.lzaytseva.moviesimdbapi.navigation.api.Router
 import com.github.lzaytseva.moviesimdbapi.ui.details.MovieDetailsFragment
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MoviesSearchFragment : Fragment() {
@@ -25,14 +23,13 @@ class MoviesSearchFragment : Fragment() {
     private var _binding: FragmentMoviesSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val router: Router by inject()
-
     private val adapter by lazy {
         MoviesAdapter(object : MoviesAdapter.MovieClickListener {
             override fun onMovieClick(movie: Movie) {
                 if (clickDebounce()) {
-                    router.openFragment(
-                        MovieDetailsFragment.newInstance(
+                    findNavController().navigate(
+                        R.id.action_moviesSearchFragment_to_movieDetailsFragment,
+                        MovieDetailsFragment.createArgs(
                             movieId = movie.id,
                             posterUrl = movie.image
                         )
@@ -158,6 +155,5 @@ class MoviesSearchFragment : Fragment() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        fun newInstance() = MoviesSearchFragment()
     }
 }

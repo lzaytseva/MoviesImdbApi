@@ -3,13 +3,12 @@ package com.github.lzaytseva.moviesimdbapi.app
 import android.app.Application
 import com.github.lzaytseva.moviesimdbapi.di.dataModule
 import com.github.lzaytseva.moviesimdbapi.di.interactorModule
-import com.github.lzaytseva.moviesimdbapi.di.navigationModule
 import com.github.lzaytseva.moviesimdbapi.di.repositoryModule
 import com.github.lzaytseva.moviesimdbapi.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 
-class App: Application() {
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
         GlobalContext.startKoin {
@@ -19,7 +18,6 @@ class App: Application() {
                 repositoryModule,
                 interactorModule,
                 viewModelModule,
-                navigationModule
             )
         }
     }
