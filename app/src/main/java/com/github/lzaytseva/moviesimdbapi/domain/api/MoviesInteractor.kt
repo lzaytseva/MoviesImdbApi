@@ -6,6 +6,7 @@ import com.github.lzaytseva.moviesimdbapi.domain.model.MovieDetails
 
 
 interface MoviesInteractor {
+
     fun searchMovies(expression: String, consumer: MoviesConsumer)
 
     fun getMovieDetails(movieId: String, consumer: MovieDetailsConsumer)
@@ -13,6 +14,7 @@ interface MoviesInteractor {
     fun getMovieCast(movieId: String, consumer: MovieCastConsumer)
 
     fun addMovieToFavorites(movie: Movie)
+
     fun removeMovieFromFavorites(movie: Movie)
 
     interface MoviesConsumer {
@@ -26,5 +28,4 @@ interface MoviesInteractor {
     interface MovieCastConsumer {
         fun consume(movieCast: MovieCast?, errorMessage: String?)
     }
-
 }

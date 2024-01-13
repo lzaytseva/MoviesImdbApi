@@ -27,7 +27,6 @@ class MovieCastViewModel(
                     stateLiveData.postValue(MovieCastState.Error(errorMessage ?: "Unknown error"))
                 }
             }
-
         })
     }
 

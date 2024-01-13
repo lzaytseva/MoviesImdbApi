@@ -8,5 +8,4 @@ class PosterViewModel(posterUrl: String) : ViewModel() {
 
     private val urlLiveData = MutableLiveData(posterUrl)
     fun observeUrl(): LiveData<String> = urlLiveData
-
 }

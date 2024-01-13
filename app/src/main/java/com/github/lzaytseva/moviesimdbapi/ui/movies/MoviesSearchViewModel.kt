@@ -32,10 +32,8 @@ class MoviesSearchViewModel(
     private var latestSearchText: String? = null
 
     private val mediatorStateLiveData = MediatorLiveData<MoviesState>().also { liveData ->
-        // 1
         liveData.addSource(stateLiveData) { movieState ->
             liveData.value = when (movieState) {
-                // 2
                 is MoviesState.Content -> MoviesState.Content(movieState.movies.sortedByDescending { it.inFavourite })
                 is MoviesState.Empty -> movieState
                 is MoviesState.Error -> movieState
@@ -44,7 +42,6 @@ class MoviesSearchViewModel(
         }
     }
 
-    // 3
     fun observeState(): LiveData<MoviesState> = mediatorStateLiveData
 
     fun observeShowToast(): LiveData<String> = showToast

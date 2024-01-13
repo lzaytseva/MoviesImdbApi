@@ -6,6 +6,7 @@ import com.github.lzaytseva.moviesimdbapi.domain.api.MoviesRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
+
     single<MoviesRepository> {
         MoviesRepositoryImpl(
             networkClient = get(),

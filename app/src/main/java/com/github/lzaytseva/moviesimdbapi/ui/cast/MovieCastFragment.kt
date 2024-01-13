@@ -53,14 +53,12 @@ class MovieCastFragment : Fragment() {
     private fun showLoading() {
         binding.contentContainer.isVisible = false
         binding.errorMessageTextView.isVisible = false
-
         binding.progressBar.isVisible = true
     }
 
     private fun showError(state: MovieCastState.Error) {
         binding.contentContainer.isVisible = false
         binding.progressBar.isVisible = false
-
         binding.errorMessageTextView.isVisible = true
         binding.errorMessageTextView.text = state.message
     }
@@ -68,7 +66,6 @@ class MovieCastFragment : Fragment() {
     private fun showContent(state: MovieCastState.Content) {
         binding.progressBar.isVisible = false
         binding.errorMessageTextView.isVisible = false
-
         binding.contentContainer.isVisible = true
 
         binding.movieTitle.text = state.fullTitle

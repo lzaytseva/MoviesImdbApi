@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 
 class LocalStorage(private val sharedPreferences: SharedPreferences) : Storage {
 
-
     override fun addToFavorites(movieId: String) {
         changeFavorites(movieId = movieId, remove = false)
     }

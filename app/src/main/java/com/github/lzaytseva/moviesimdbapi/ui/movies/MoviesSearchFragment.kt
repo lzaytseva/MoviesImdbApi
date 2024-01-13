@@ -53,11 +53,6 @@ class MoviesSearchFragment : Fragment() {
 
     private val viewModel: MoviesSearchViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -126,7 +121,6 @@ class MoviesSearchFragment : Fragment() {
         binding.rvMovies.visibility = View.GONE
         binding.placeholderMessage.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
-
         binding.placeholderMessage.text = errorMessage
     }
 

@@ -58,6 +58,4 @@ class MoviesInteractorImpl(private val repository: MoviesRepository) : MoviesInt
     override fun removeMovieFromFavorites(movie: Movie) {
         repository.removeMovieFromFavorites(movie)
     }
-
-
 }

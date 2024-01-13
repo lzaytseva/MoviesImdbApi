@@ -16,7 +16,6 @@ import org.koin.core.parameter.parametersOf
 
 class AboutFragment : Fragment() {
 
-
     private var _binding: FragmentAboutBinding? = null
     private val binding get() = _binding!!
 
@@ -27,7 +26,6 @@ class AboutFragment : Fragment() {
     private val aboutViewModel: AboutViewModel by viewModel {
         parametersOf(movieId)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +77,6 @@ class AboutFragment : Fragment() {
                 binding.plot.text = plot
             }
         }
-
     }
 
     override fun onDestroyView() {

@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
+
     single<IMDbApiService> {
         Retrofit.Builder()
             .baseUrl(RetrofitNetworkClient.IMDB_BASE_URL)
@@ -29,14 +30,11 @@ val dataModule = module {
     }
 
     single<Storage> {
-        LocalStorage(
-            sharedPreferences = get()
-        )
+        LocalStorage(sharedPreferences = get())
     }
 
     single {
-        androidContext()
-            .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
+        androidContext().getSharedPreferences("local_storage", Context.MODE_PRIVATE)
     }
 
     single {

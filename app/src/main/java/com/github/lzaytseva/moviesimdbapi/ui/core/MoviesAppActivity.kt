@@ -10,5 +10,4 @@ class MoviesAppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movies_app)
     }
-
 }

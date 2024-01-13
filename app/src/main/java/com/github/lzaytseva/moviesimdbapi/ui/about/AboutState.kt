@@ -11,5 +11,4 @@ sealed interface AboutState {
     data class Error(
         val message: String
     ) : AboutState
-
 }

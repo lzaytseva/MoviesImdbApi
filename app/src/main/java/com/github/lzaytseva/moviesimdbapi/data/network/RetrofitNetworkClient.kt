@@ -8,8 +8,7 @@ import com.github.lzaytseva.moviesimdbapi.data.dto.MovieDetailsRequest
 import com.github.lzaytseva.moviesimdbapi.data.dto.MoviesSearchRequest
 import com.github.lzaytseva.moviesimdbapi.data.dto.Response
 
-class RetrofitNetworkClient
-    (
+class RetrofitNetworkClient(
     private val context: Context,
     private val imdbService: IMDbApiService
 ) : NetworkClient {

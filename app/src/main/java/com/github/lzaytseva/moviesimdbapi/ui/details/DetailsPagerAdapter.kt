@@ -21,6 +21,4 @@ class DetailsPagerAdapter(
             else -> AboutFragment.newInstance(movieID)
         }
     }
-
-
 }

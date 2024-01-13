@@ -36,9 +36,9 @@ class MoviesAdapter(private val clickListener: MovieClickListener) :
         ) {
 
         var title: TextView = itemView.findViewById(R.id.title)
-        var description: TextView = itemView.findViewById(R.id.description)
-        var poster: ImageView = itemView.findViewById(R.id.poster)
-        var inFavoriteToggle: ImageView = itemView.findViewById(R.id.favourite)
+        private var description: TextView = itemView.findViewById(R.id.description)
+        private var poster: ImageView = itemView.findViewById(R.id.poster)
+        private var inFavoriteToggle: ImageView = itemView.findViewById(R.id.favourite)
 
         fun bind(movie: Movie) {
             title.text = movie.title
@@ -50,7 +50,7 @@ class MoviesAdapter(private val clickListener: MovieClickListener) :
             inFavoriteToggle.setImageDrawable(getFavoriteToggleDrawable(movie.inFavourite))
 
             itemView.setOnClickListener { clickListener.onMovieClick(movie) }
-            // 3
+
             inFavoriteToggle.setOnClickListener { clickListener.onFavoriteToggleClick(movie) }
         }
 
@@ -60,12 +60,10 @@ class MoviesAdapter(private val clickListener: MovieClickListener) :
                 if (inFavorite) android.R.drawable.btn_star_big_on else android.R.drawable.btn_star_big_off
             )
         }
-
     }
 
     interface MovieClickListener {
         fun onMovieClick(movie: Movie)
         fun onFavoriteToggleClick(movie: Movie)
     }
-
 }

@@ -12,5 +12,4 @@ sealed interface MovieCastRVItem: RVItem {
     data class PersonItem(
         val data: MovieCastPerson,
     ) : MovieCastRVItem
-
 }
